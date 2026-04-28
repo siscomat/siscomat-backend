@@ -24,27 +24,65 @@ namespace Siscomat.Repositories
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Participante>()
-                .HasKey(p => p.Folio);
-            modelBuilder.Entity<Participante>()
-                .Property(p => p.Nombre)
-                .IsRequired()
-                .HasMaxLength(100);
+            // propiedades de los campos de la bd
+            modelBuilder.Entity<Participante>(entity =>
+            {
+                entity.HasKey(p => p.Folio);
+                entity.Property(p => p.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(150);
+                entity.Property(p => p.Apellido1)
+                    .IsRequired()
+                    .HasMaxLength(150);
+                entity.Property(p => p.Apellido2)
+                    .HasMaxLength(150);
+            });
 
-            modelBuilder.Entity<Gestor>()
-                .Property(g => g.Correo)
+            modelBuilder.Entity<Gestor>(entity =>
+            {
+                entity.Property(g => g.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(150);
+                entity.Property(g => g.Apellido1)
+                    .IsRequired()
+                    .HasMaxLength(150);
+                entity.Property(g => g.Apellido2)
+                    .HasMaxLength(150);
+                entity.Property(g => g.Correo)
+                    .IsRequired()
+                    .HasMaxLength(150);
+                entity.HasIndex(g => g.Correo)
+                    .IsUnique();
+                entity.Property(g => g.PasswordHash)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Plantilla>(entity =>
+            {
+                entity.Property(p => p.Nombre)
                 .IsRequired()
                 .HasMaxLength(150);
-            modelBuilder.Entity<Gestor>()
-                .HasIndex(g => g.Correo)
-                .IsUnique();
-            modelBuilder.Entity<Gestor>()
-                .Property(g => g.PasswordHash)
+                entity.Property(p => p.Path)
                 .IsRequired();
+            });
 
-            modelBuilder.Entity<Plantilla>()
-                .Property(p => p.path)
-                .IsRequired();
+            modelBuilder.Entity<Curso>()
+                .Property(c => c.Nombre)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            modelBuilder.Entity<Constancia>(entity =>
+            {
+                entity.HasOne(c => c.Curso)
+                    .WithMany(curso => curso.Constancias)
+                    .HasForeignKey(c => c.CursoId);
+                entity.HasOne(c => c.Plantilla)
+                    .WithMany(plantilla => plantilla.Constancias)
+                    .HasForeignKey(p => p.PlantillaId);
+                entity.HasOne(c => c.Participante)
+                    .WithMany(participante => participante.Constancias)
+                    .HasForeignKey(p => p.FolioParticipante);
+            });
         }
     }
 }
