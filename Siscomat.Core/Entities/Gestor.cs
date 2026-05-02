@@ -9,11 +9,11 @@ namespace Siscomat.Core.Entities
     public class Gestor
     {
         public int Id { get; init; }
-        public string Nombre { get; private set; }
-        public string Apellido1 { get; private set; }
-        public string Apellido2 { get; private set; }
-        public string Correo { get; private set; }
-        public string PasswordHash { get; private set; }
+        public string Nombre { get; set; }
+        public string Apellido1 { get; set; }
+        public string Apellido2 { get; set; }
+        public string Correo { get;  set; }
+        public string PasswordHash { get; set; }
         public bool EsAdmin { get; set; }
 
         public Gestor() { }
