@@ -24,7 +24,8 @@ namespace Siscomat.Api.Controllers
             {
                 id = p.Id,
                 nombre = p.Nombre,
-                created_at = p.CreatedAt
+                created_at = p.CreatedAt,
+                en_uso = p.Constancias.Any()
             }));
         }
 
@@ -53,16 +54,21 @@ namespace Siscomat.Api.Controllers
             {
                 id = plantilla.Id,
                 nombre = plantilla.Nombre,
-                created_at = plantilla.CreatedAt
+                created_at = plantilla.CreatedAt,
+                en_uso = false
             });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Eliminar(int id)
         {
-            var eliminado = await _plantillaService.EliminarAsync(id);
+            var (eliminado, enUso) = await _plantillaService.EliminarAsync(id);
+
             if (!eliminado)
                 return NotFound(new { error = "No existe una plantilla con ese id." });
+
+            if (enUso)
+                return Conflict(new { error = "La plantilla ya fue usada para generar constancias y no puede eliminarse." });
 
             return Ok(new { mensaje = "Plantilla eliminada exitosamente." });
         }

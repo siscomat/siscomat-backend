@@ -45,10 +45,12 @@ namespace Siscomat.Services
             return plantilla;
         }
 
-        public async Task<bool> EliminarAsync(int id)
+        public async Task<(bool eliminado, bool enUso)> EliminarAsync(int id)
         {
             var plantilla = await _plantillaRepo.GetByIdAsync(id);
-            if (plantilla == null) return false;
+            if (plantilla == null) return (false, false);
+
+            if (plantilla.Constancias.Any()) return (true, true);
 
             if (File.Exists(plantilla.Path))
                 File.Delete(plantilla.Path);
@@ -56,7 +58,7 @@ namespace Siscomat.Services
             await _plantillaRepo.DeleteAsync(id);
             await _plantillaRepo.SaveChangesAsync();
 
-            return true;
+            return (true, false);
         }
 
         public async Task<(byte[] bytes, string path)?> GetArchivoAsync(int id)

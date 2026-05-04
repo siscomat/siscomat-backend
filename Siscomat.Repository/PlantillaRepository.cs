@@ -15,12 +15,16 @@ namespace Siscomat.Repositories
 
         public async Task<Plantilla?> GetByIdAsync(int id)
         {
-            return await _db.Plantillas.FirstOrDefaultAsync(p => p.Id == id);
+            return await _db.Plantillas
+                .Include(p => p.Constancias)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Plantilla>> GetAllAsync()
         {
-            return await _db.Plantillas.ToListAsync();
+            return await _db.Plantillas
+                .Include(p => p.Constancias)
+                .ToListAsync();
         }
 
         public async Task AddAsync(Plantilla plantilla)
@@ -30,7 +34,7 @@ namespace Siscomat.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var plantilla = await GetByIdAsync(id);
+            var plantilla = await _db.Plantillas.FirstOrDefaultAsync(p => p.Id == id);
             if (plantilla != null)
                 _db.Plantillas.Remove(plantilla);
         }
