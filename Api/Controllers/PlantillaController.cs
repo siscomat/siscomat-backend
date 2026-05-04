@@ -48,15 +48,30 @@ namespace Siscomat.Api.Controllers
             if (!archivo.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase))
                 return BadRequest(new { error = "El archivo debe ser un PDF." });
 
-            var plantilla = await _plantillaService.SubirAsync(nombre, archivo);
-
-            return CreatedAtAction(nameof(GetAll), new
+            try
             {
-                id = plantilla.Id,
-                nombre = plantilla.Nombre,
-                created_at = plantilla.CreatedAt,
-                en_uso = false
-            });
+                var plantilla = await _plantillaService.SubirAsync(nombre, archivo);
+
+                return CreatedAtAction(nameof(GetAll), new
+                {
+                    id = plantilla.Id,
+                    nombre = plantilla.Nombre,
+                    created_at = plantilla.CreatedAt,
+                    en_uso = false
+                });
+            }
+            catch (PlantillaInvalidaException ex)
+            {
+                return BadRequest(new 
+                { 
+                    error = "La plantilla no cuenta con los placeholders requeridos.",
+                    detalles = ex.Detalles 
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]

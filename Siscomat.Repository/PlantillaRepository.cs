@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Siscomat.Core.Entities;
 using Siscomat.Core.Interfaces;
+using System.Linq;
 
 namespace Siscomat.Repositories
 {
@@ -24,6 +25,7 @@ namespace Siscomat.Repositories
         {
             return await _db.Plantillas
                 .Include(p => p.Constancias)
+                .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
         }
 
