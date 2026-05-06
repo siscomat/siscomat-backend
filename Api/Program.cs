@@ -65,6 +65,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PublicService>();
 builder.Services.AddScoped<PlantillaService>();
 builder.Services.AddScoped<ConstanciaService>();
+builder.Services.AddScoped<GestorService>();
 
 // 3. HttpClient para microservicio Python
 builder.Services.AddHttpClient("microservicio", client =>
