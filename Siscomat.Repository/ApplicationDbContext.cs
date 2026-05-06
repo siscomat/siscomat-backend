@@ -30,27 +30,27 @@ namespace Siscomat.Repositories
                 entity.HasKey(p => p.Folio);
                 entity.Property(p => p.Nombre)
                     .IsRequired()
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.Property(p => p.Apellido1)
                     .IsRequired()
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.Property(p => p.Apellido2)
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Gestor>(entity =>
             {
                 entity.Property(g => g.Nombre)
                     .IsRequired()
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.Property(g => g.Apellido1)
                     .IsRequired()
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.Property(g => g.Apellido2)
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.Property(g => g.Correo)
                     .IsRequired()
-                    .HasMaxLength(150);
+                    .HasMaxLength(50);
                 entity.HasIndex(g => g.Correo)
                     .IsUnique();
                 entity.Property(g => g.PasswordHash)
