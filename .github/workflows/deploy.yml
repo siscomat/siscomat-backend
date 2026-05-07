@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/siscomat/siscomat-backend
-            git pull origin main
+            git pull origin master
             cd ~/siscomat/siscomat-deploy
             docker compose up -d --build api
             docker image prune -f
