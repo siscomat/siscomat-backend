@@ -8,6 +8,7 @@ COPY ["Api/Siscomat.Api.csproj", "Api/"]
 COPY ["Siscomat.Services/Siscomat.Services.csproj", "Siscomat.Services/"]
 COPY ["Siscomat.Repository/Siscomat.Repositories.csproj", "Siscomat.Repository/"]
 COPY ["Siscomat.Core/Siscomat.Core.csproj", "Siscomat.Core/"]
+COPY ["Siscomat.Tests/Siscomat.Tests.csproj", "Siscomat.Tests/"]
 
 # restaurar dependencias
 RUN dotnet restore "siscomat.sln"
